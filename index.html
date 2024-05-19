@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>WebOntology</title>
+    <link rel="stylesheet" href="styles/styleOfWorkspace.css" type="text/css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css"
+          integrity="sha384-KiWOvVjnN8qwAZbuQyWDIbfCLFhLXNETzBQjA/92pIowpC0d2O3nppDGQVgwd2nB" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+            integrity="sha384-0fdwu/T/EQMsQlrHCCHoH10pkPLlKA1jL5dFyUOvB3lfeT2540/2g6YgSi2BL14p"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.3.1/joint.css">
+</head>
+<body>
+<nav id="navbar">
+    <ul class="topMenu">
+        <li class="headerLi"><a class="active">Проект</a>
+            <ul class="submenu">
+                <li class="hoverLi">
+                    <button class="navbarButton" id="saveProjectModalOpener">Сохранить проект</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="loadProjectModalOpener">Открыть проект</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="exitProjectModalOpener">Выйти из проекта</button>
+                </li>
+            </ul>
+        </li>
+        <li class="headerLi"><a class="active" style="padding: 28px 40px">Работа с текстом</a>
+            <ul class="submenu">
+                <li class="hoverLi">
+                    <button class="navbarButton" id="loadInformationModalOpener">Загрузить данные из файла</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="checkInformationModalOpener">Просмотреть сохранённые данные
+                    </button>
+                </li>
+            </ul>
+        </li>
+        <li class="headerLi"><a class="active">Классы</a>
+            <ul class="submenu">
+                <li class="hoverLi">
+                    <button class="navbarButton" id="addConcept">Добавить класс</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="viewClass">Просмотреть классы</button>
+                </li>
+                <!--<li class="hoverLi"><button class="navbarButton" id="deleteOneClass">Удалить класс</button></li>-->
+            </ul>
+        </li>
+        <li class="headerLi"><a class="active">Отношения</a>
+            <ul class="submenu">
+                <li class="hoverLi">
+                    <button class="navbarButton" id="addRelation">Создать отношение</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="viewRelation">Просмотреть отношения</button>
+                </li>
+            </ul>
+        </li>
+        <li class="headerLi"><a class="active">Операции</a>
+            <ul class="submenu">
+                <li class="hoverLi">
+                    <button class="navbarButton" id="findNeighborhood">Построить окрестность</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="makeSelection">Построить выборку</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="makeInsertion">Выполнить вставку</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="makeRemoval">Выполнить удаление</button>
+                </li>
+                <li class="hoverLi">
+                    <button class="navbarButton" id="listOfResults">Посмотреть результаты операций</button>
+                </li>
+            </ul>
+        </li>
+        <button class="headButtons" id="deleteAll">Очистить экран</button>
+    </ul>
+</nav>
+<div id="paper"></div>
+<div id="buttonStorage">
+</div>
+<div id="modalArea" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeAreaSave">&times;</span>
+            <label for="areaName"></label>
+            <input id="areaName" placeholder="Введите название">
+        </div>
+        <div class="modal-body">
+            <p>Будут добавлены следующие понятия</p>
+            <div id="areaConcept"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="saveArea">Добавить</button>
+            <label for="areaColorChanger"></label>
+            <input type="color" id="areaColorChanger" class="colorChanger" name="head"
+                   value="#e66465">
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeDeleteModal">&times;</span>
+            <!--<input id="deleteModalName" disabled="disabled" autocomplete="off">-->
+            <div id="deleteModalName"></div>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="cancelDeleteValue">Отмена</button>
+            <button class="headButtons" id="deleteValue">Удалить</button>
+        </div>
+    </div>
+</div>
+<div id="mainModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeModalForm">&times;</span>
+            <label for="formName"></label>
+            <input id="formName" class="allModalName" placeholder="Введите значение" autocomplete="off">
+            <br>
+            <label for="formType"></label>
+            <input id="formType" autocomplete="off" disabled="disabled">
+        </div>
+        <div id="modalBody" class="modal-body">
+            <div id="formula"></div>
+            <label for="modalValues"></label>
+            <input id="modalValues" type="text">
+            <button id="addModalValues">Добавить значение</button>
+            <button id="changeModalValues">Изменить старое значение</button>
+            <br>
+            <button id="clean">Очистить строку</button>
+            <label for="search-text"></label>
+            <input class="formControl" type="text" placeholder="Поиск" id="search-text">
+            <div id="function" class="noSelect">
+                <div>
+                    <button id="relationshipSymbols" class="functionButton">⩽ ≠ ≈</button>
+                    <div id="functionList1" class="dropdownContent">
+                        <div class="rowed">
+                            <button id="leqslant" class="constructorSymbols">⩽</button>
+                            <button id="prec" class="constructorSymbols">≺</button>
+                            <button id="neq" class="constructorSymbols">≠</button>
+                            <button id="approx" class="constructorSymbols">≈</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="geqslant" class="constructorSymbols">⩾</button>
+                            <button id="succ" class="constructorSymbols">≻</button>
+                            <button id="equiv" class="constructorSymbols">≡</button>
+                            <button id="varpropto" class="constructorSymbols">∝</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button id="operatorSymbols" class="functionButton">± ⦁ ⊗</button>
+                    <div id="functionList2" class="dropdownContent">
+                        <div class="rowed">
+                            <button id="pm" class="constructorSymbols">±</button>
+                            <button id="times" class="constructorSymbols">×</button>
+                            <button id="ast" class="constructorSymbols">*</button>
+                            <button id="circ" class="constructorSymbols">∘</button>
+                            <button id="otimes" class="constructorSymbols">⊗</button>
+                            <button id="langle" class="constructorSymbols">〈</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="mp" class="constructorSymbols">∓</button>
+                            <button id="div" class="constructorSymbols">÷</button>
+                            <button id="cdot" class="constructorSymbols">·</button>
+                            <button id="bullet" class="constructorSymbols">⦁</button>
+                            <button id="oplus" class="constructorSymbols">⊕</button>
+                            <button id="rangle" class="constructorSymbols">〉</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button id="arrowSymbols" class="functionButton">→ ⇔ ↓</button>
+                    <div id="functionList3" class="dropdownContent">
+                        <div class="rowed">
+                            <button id="rightarrow" class="constructorSymbols">→</button>
+                            <button id="uparrow" class="constructorSymbols">↑</button>
+                            <button id=" Rightarrow" class="constructorSymbols">⇒</button>
+                            <button id=" Uparrow" class="constructorSymbols">⇑</button>
+                            <button id="mapsto" class="constructorSymbols">↦</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="leftarrow" class="constructorSymbols">←</button>
+                            <button id="downarrow" class="constructorSymbols">↓</button>
+                            <button id=" Leftarrow" class="constructorSymbols">⇐</button>
+                            <button id=" Downarrow" class="constructorSymbols">⇓</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="leftrightarrow" class="constructorSymbols">↔</button>
+                            <button id="updownarrow" class="constructorSymbols">↕</button>
+                            <button id=" Leftrightarrow" class="constructorSymbols">⇔</button>
+                            <button id=" Updownarrow" class="constructorSymbols">⇕</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button id="logicalSymbols" class="functionButton">∴ ∀ ∃</button>
+                    <div id="functionList4" class="dropdownContent">
+                        <div class="rowed">
+                            <button id="therefore" class="constructorSymbols">∴</button>
+                            <button id="ni" class="constructorSymbols">∋</button>
+                            <button id="forall" class="constructorSymbols">∀</button>
+                            <button id="wedge" class="constructorSymbols">∧</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="because" class="constructorSymbols">∵</button>
+                            <button id="exists" class="constructorSymbols">∃</button>
+                            <button id="neg" class="constructorSymbols">¬</button>
+                            <button id="vee" class="constructorSymbols">∨</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button id="set-theoreticSymbols" class="functionButton">∉ ⋂ ⊂</button>
+                    <div id="functionList5" class="dropdownContent">
+                        <div class="rowed">
+                            <button id="in" class="constructorSymbols">∈</button>
+                            <button id="cup" class="constructorSymbols">∪</button>
+                            <button id="subset" class="constructorSymbols">⊂</button>
+                            <button id="subseteq" class="constructorSymbols">⊆</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="notin" class="constructorSymbols">∉</button>
+                            <button id="cap" class="constructorSymbols">⋂</button>
+                            <button id="supset" class="constructorSymbols">⊃</button>
+                            <button id="supseteq" class="constructorSymbols">⊇</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button id="uniqueSymbols" class="functionButton">aⁿ aₙ ...</button>
+                    <div id="functionList6" class="dropdownContent">
+                        <div class="rowed">
+                            <button id="up" class="constructorSymbols">aⁿ</button>
+                            <button id="dfrac" class="constructorSymbols"><sup>a</sup>&frasl;<sub>b</sub></button>
+                        </div>
+                        <div class="rowed">
+                            <button id="down" class="constructorSymbols">aₙ</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button id="LowercaseGreekLetters" class="functionButton">λ ω θ</button>
+                    <div id="functionList7" class="dropdownContent">
+                        <div class="rowed">
+                            <button id="alpha" class="constructorSymbols lowerGreek">α</button>
+                            <button id="epsilon" class="constructorSymbols lowerGreek">ε</button>
+                            <button id="iota" class="constructorSymbols lowerGreek">ι</button>
+                            <button id="nu" class="constructorSymbols lowerGreek">ν</button>
+                            <button id="rho" class="constructorSymbols lowerGreek">ρ</button>
+                            <button id="phi" class="constructorSymbols lowerGreek">φ</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="beta" class="constructorSymbols lowerGreek">β</button>
+                            <button id="zeta" class="constructorSymbols lowerGreek">ζ</button>
+                            <button id="kappa" class="constructorSymbols lowerGreek">ϰ</button>
+                            <button id="xi" class="constructorSymbols lowerGreek">ξ</button>
+                            <button id="sigma" class="constructorSymbols lowerGreek">σ</button>
+                            <button id="chi" class="constructorSymbols lowerGreek">χ</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="gamma" class="constructorSymbols lowerGreek">γ</button>
+                            <button id="eta" class="constructorSymbols lowerGreek">η</button>
+                            <button id="lambda" class="constructorSymbols lowerGreek">λ</button>
+                            <button id="omicron" class="constructorSymbols lowerGreek">ο</button>
+                            <button id="tau" class="constructorSymbols lowerGreek">𝜏</button>
+                            <button id="psi" class="constructorSymbols lowerGreek">ψ</button>
+                        </div>
+                        <div class="rowed">
+                            <button id="delta" class="constructorSymbols lowerGreek">δ</button>
+                            <button id="theta" class="constructorSymbols lowerGreek">θ</button>
+                            <button id="mu" class="constructorSymbols lowerGreek">μ</button>
+                            <button id="pi" class="constructorSymbols lowerGreek">π</button>
+                            <button id="upsilon" class="constructorSymbols lowerGreek">υ</button>
+                            <button id="omega" class="constructorSymbols lowerGreek">ω</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex; align-items:baseline">
+                <table id="valueList" class="classList">
+                    <tr>
+                        <th>Имя</th>
+                    </tr>
+                </table>
+                <div>
+                    <button id="sortButtonAZ">&#9650;</button>
+                    <button id="sortButtonZA">&#9660;</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="saveForm">Сохранить</button>
+            <button class="headButtons" id="deleteClassForm">Удалить класс</button>
+            <label for="formColorChanger"></label>
+            <input type="color" class="colorChanger" id="formColorChanger" name="head">
+        </div>
+    </div>
+</div>
+<div id="classViewModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeClassViewModal">&times;</span>
+            <p id="classViewModalName">Все классы</p>
+        </div>
+        <div id="modifyBody" class="modal-body">
+            <table id="classList" class="classList">
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="relationViewModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeRelationViewModal">&times;</span>
+            <p id="relationViewModalName">Все классы</p>
+        </div>
+        <div id="viewRelationBody" class="modal-body" style="overflow: auto; height: 30rem;">
+            <table id="relationList" class="classList">
+                <tr>
+                    <th>Имя</th>
+                    <th>Тип</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="viewRelationClasses" class="modal">
+    <div class="modal-content" style="width: 65%;height: 100%;">
+        <div class="modal-header">
+            <span class="close" id="closeRelationShowingModal">&times;</span>
+            <p id="relationModalName">Отношение </p>
+        </div>
+        <div id="relationShowingBlock" class="modal-body" style="width: 99%; height: 80%"></div>
+        <div class="modal-footer">
+            <button class="headButtons" id="cancelShowingRelationClasses">Назад</button>
+        </div>
+    </div>
+</div>
+<div id="classCreationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeClassCreationModal">&times;</span>
+            <label for="classCreationName"></label>
+            <input id="classCreationName" class="allModalName" disabled="disabled" placeholder="Создание класса">
+        </div>
+        <div class="modal-body">
+            <label for="classCreationModalName">Введите имя класса:</label>
+            <input id="classCreationModalName" class="formModalName" autocomplete="off">
+        </div>
+        <hr>
+        <div class="modal-body">
+            <label id="labelTypeSelect" for="typeSelect">Тип значений:
+                <br>
+                <select id="typeSelect">
+                    <option disabled>Выберите тип</option>
+                    <option>Символьный</option>
+                    <option>Формульный</option>
+                    <option>Неструктурированный</option>
+                </select>
+            </label>
+        </div>
+        <hr>
+        <div class="modal-body">
+            <label for="classColorChanger">Выберите цвет:<input type="color" class="colorChanger" id="classColorChanger"
+                                                                name="head"></label>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="saveClass">Добавить</button>
+        </div>
+    </div>
+</div>
+<div id="addRelationCreationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeRelationCreationModal">&times;</span>
+            <label for="relationCreationName"></label>
+            <input id="relationCreationName" class="allModalName" disabled="disabled" placeholder="Создание отношения">
+        </div>
+        <div class="modal-body">
+            <label for="relationCreationModalName">Введите имя отношения:</label><input id="relationCreationModalName"
+                                                                                        class="formModalName"
+                                                                                        autocomplete="off">
+            <p style="margin: 1rem 1rem 1rem 0; font-size:16pt">Выберите классы, между которыми создаётся отношение:</p>
+            <div id="tableInRelationModal">
+                <table id="relationClassList" class="classList"></table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="createRelation">Создать</button>
+            <button class="headButtons" id="cancelAllChosen">Отменить выбор</button>
+        </div>
+    </div>
+</div>
+<div id="modifyRelationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeRelationModifyModal">&times;</span>
+            <label for="relationName"></label>
+            <input id="relationName" class="allModalName" disabled="disabled" autocomplete="off">
+        </div>
+        <div id="writeDescription" class="modal-body">
+        </div>
+        <div class="modal-body">
+            <label for="relationChangeModalName">Введите новое имя отношения:</label>
+            <input id="relationChangeModalName" class="formModalName" autocomplete="off">
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons cl1" id="saveRelationInModal">Сохранить</button>
+            <button class="headButtons cl1" id="swapOrientation">Изменить направление</button>
+            <button class="headButtons cl1" id="connectedElements">Править отношение</button>
+            <button class="headButtons cl1" id="buildTreeForRelation">Построить дерево</button>
+            <button class="headButtons cl1" id="deleteRelation">Удалить отношение</button>
+        </div>
+    </div>
+</div>
+<div id="lookAtConnectedElements" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeElementsModal">&times;</span>
+            <p class="allModalName" id="connectedElementsModalName">Править отношение</p>
+        </div>
+        <div id="elementsBody" class="modal-body">
+            <div style="display: flex">
+                <table id="classList1" class="listOfElements">
+                    <tr>
+                        <th>Элемент класса</th>
+                    </tr>
+                </table>
+                <table id="classList2" class="listOfElements">
+                    <tr>
+                        <th>Элемент класса</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="addConnectionButton" style="display: none;">Добавить</button>
+            <button class="headButtons" id="deleteConnectionButton" style="display: none">Удалить</button>
+            <button class="headButtons" id="backButton" style="display: none;">Назад</button>
+            <button class="headButtons" id="addConnection">Добавить связь</button>
+            <button class="headButtons" id="deleteConnection">Удалить связь</button>
+        </div>
+    </div>
+</div>
+<div id="saveProjectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeSaveProjectModal">&times;</span>
+            <p id="saveProjectModalName" class="allModalName"></p>
+        </div>
+        <div id="saveProjectBody" class="modal-body">
+            <label for="projectName">Введите название проекта:</label>
+            <input class="formModalName" id="projectName" type="text">
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="saveProject">Сохранить</button>
+            <button class="headButtons" id="saveProjectOnPC">Сохранить на пк</button>
+        </div>
+    </div>
+</div>
+<div id="loadProjectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeLoadProjectModal">&times;</span>
+            <p id="loadProjectModalName" class="allModalName">Загрузить проект</p>
+        </div>
+        <div id="loadProjectBody" class="modal-body">
+            <table id="projectList" class="classList">
+                <tr>
+                    <th>Имя</th>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="loadProject">Загрузить</button>
+            <!--<label class="loadButton headButtons" for="loadProjectFromPC">Загрузить с пк</label>-->
+            <input name="projectInformation" type="file" id="fileFromPC">
+            <button class="headButtons" id="loadProjectFromPC">Загрузить с пк</button>
+        </div>
+    </div>
+</div>
+<div id="findNeighborhoodModal" class="modal">
+    <div class="modal-content" style="width:60%">
+        <div class="modal-header">
+            <span class="close" id="closeFNeighborhoodModal">&times;</span>
+            <p id="loadFNeighborhoodName" class="allModalName">Построить окрестность</p>
+        </div>
+        <div id="loadFNeighborhoodBody" class="modal-body" style="display: flex; flex-wrap: wrap">
+            <div class="FNContainer">
+                <label for="listOfClass">Выберите класс центра окрестности</label>
+                <select id="listOfClass" class="listInFNContainer classes" name="classes">
+                </select>
+            </div>
+            <div class="FNContainer">
+                <label for="listOfConcepts">Выберите элемент класса</label>
+                <select id="listOfConcepts" class="listInFNContainer classes" name="concepts">
+                </select>
+            </div>
+            <div class="FNContainer">
+                <label for="listOfSecondClass">Выберите класс границы окрестности</label>
+                <select id="listOfSecondClass" class="listInFNContainer classes" name="relations">
+                </select>
+            </div>
+            <div class="FNContainer">
+                <label for="listOfRelation">Выберите отношение</label>
+                <select id="listOfRelation" class="listInFNContainer classes" name="relations">
+                </select>
+            </div>
+            <div id="listOfEndElements" class="treeBlock"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="buildNeighborhood">Построить</button>
+            <button class="headButtons" id="saveNeighborhood">Сохранить</button>
+        </div>
+    </div>
+</div>
+<div id="saveNeighborhoodModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeSNeighborhoodModal">&times;</span>
+            <p id="saveNeighborhoodModalName" class="allModalName">Сохранить окрестность</p>
+        </div>
+        <div id="saveNeighborhoodBody" class="modal-body" style="display: flex; flex-wrap: wrap">
+            <label for="operationName">Введите название операции:</label>
+            <input id="operationName" class="formModalName" autocomplete="off">
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="saveInNeighborhoodModal">Сохранить</button>
+        </div>
+    </div>
+</div>
+<div id="makeSelectionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeMakeSelectionModal">&times;</span>
+            <p id="loadMakeSelectionName" class="allModalName">Построить выборку</p>
+        </div>
+        <div id="loadMakeSelectionBody" class="modal-body"
+             style="display: flex; flex-wrap: wrap; flex-direction: column;">
+            <div class="FNContainer">
+                <label for="listOfClassInSelectionBody">Выберите центральный класс</label>
+                <select id="listOfClassInSelectionBody" style="width: 210px" class="listInFNContainer" name="classes">
+                </select>
+            </div>
+            <div class="FNContainer">
+                <label for="sampleFor">Введите выражение для поиска:</label>
+                <input id="sampleFor" class="formModalName" autocomplete="off">
+            </div>
+            <div id="treeBlockInSelectionBody" class="treeBlock"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="buildSelection">Построить</button>
+            <button class="headButtons" id="saveSelection">Сохранить</button>
+        </div>
+    </div>
+</div>
+<div id="saveSelectionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeSelectionModal">&times;</span>
+            <p id="saveSelectionModalName" class="allModalName">Сохранить выборку</p>
+        </div>
+        <div id="saveSelectionBody" class="modal-body" style="display: flex; flex-wrap: wrap">
+            <label for="selectionName">Введите название операции:</label>
+            <input id="selectionName" class="formModalName" autocomplete="off">
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="saveInSelectionModal">Сохранить</button>
+        </div>
+    </div>
+</div>
+<div id="makeInsertionModal" class="modal">
+    <div class="modal-content" style="width: 60%">
+        <div class="modal-header">
+            <span class="close" id="closeMakeInsertionModal">&times;</span>
+            <p id="loadMakeInsertionName" class="allModalName">Выполнить вставку</p>
+        </div>
+        <div id="loadMakeInsertionBody" class="modal-body"
+             style="display: flex; flex-wrap: wrap; flex-direction: column;">
+            <div class="FNContainer insertionStyle">
+                <div class="labelStyle">
+                    <label for="firstListOfOperationInInsertionBody">Выберите первую конфигурацию:</label>
+                    <select id="firstListOfOperationInInsertionBody" style="width: 210px" class="listInFNContainer"
+                            name="classes">
+                    </select>
+                </div>
+                <div class="labelStyle">
+                    <label for="inputRadioButtonForInsertionType">Выберите тип вставки:</label>
+                    <div id="inputRadioButtonForInsertionType"
+                         style="display: flex; width: 50%; justify-content: space-around;">
+                        <div>
+                            <input type="radio" id="rightInsertion"
+                                   name="type" value="R" checked>
+                            <label for="rightInsertion">R</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="leftInsertion"
+                                   name="type" value="L">
+                            <label for="leftInsertion">L</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="labelStyle">
+                    <label for="secondListOfOperationInInsertionBody" class="labelStyle">Выберите вторую
+                        конфигурацию:</label>
+                    <select id="secondListOfOperationInInsertionBody" style="width: 210px" class="listInFNContainer"
+                            name="classes">
+                    </select>
+                </div>
+            </div>
+            <div class="insertionStyle">
+                <div id="firstTreeBlockInInsertionBody" class="styleOfTreeBlocksInInsertion"></div>
+                <div id="secondTreeBlockInInsertionBody" class="styleOfTreeBlocksInInsertion"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="makeInsert">Вставить и вывести в данном окне</button>
+            <button class="headButtons" id="showFullSize">Вставить и вывести результат отдельно</button>
+            <button class="headButtons" id="saveInsertion">Сохранить</button>
+            <button class="headButtons" id="resetInsertion">Сбросить</button>
+        </div>
+    </div>
+</div>
+<div id="saveInsertionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeSaveSelectionModal">&times;</span>
+            <p id="saveInsertionModalName" class="allModalName">Сохранить вставку</p>
+        </div>
+        <div id="saveInsertionBody" class="modal-body" style="display: flex; flex-wrap: wrap">
+            <label for="insertionName">Введите название вставки:</label>
+            <input id="insertionName" class="formModalName" autocomplete="off">
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="saveInInsertionModal">Сохранить</button>
+        </div>
+    </div>
+</div>
+<div id="makeRemovalModal" class="modal">
+    <div class="modal-content" style="width: 60%">
+        <div class="modal-header">
+            <span class="close" id="closeMakeRemovalModal">&times;</span>
+            <p id="loadMakeRemovalName" class="allModalName">Выполнить удаление</p>
+        </div>
+        <div id="loadMakeRemovalBody" class="modal-body"
+             style="display: flex; flex-wrap: wrap; flex-direction: column;">
+            <div class="FNContainer RemovalStyle">
+                <div class="labelStyle">
+                    <label for="listOfOperationInRemovalBody">Выберите первую конфигурацию:</label>
+                    <select id="listOfOperationInRemovalBody" style="width: 210px" class="listInFNContainer"
+                            name="classes">
+                    </select>
+                </div>
+            </div>
+            <div id="treeBlockInRemovalBody" class="treeBlock"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="makeRemove">Удалить</button>
+            <button class="headButtons" id="saveRemoval">Сохранить</button>
+            <button class="headButtons" id="resetRemoval">Сбросить</button>
+        </div>
+    </div>
+</div>
+<div id="saveRemovalModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeSaveRemovalModal">&times;</span>
+            <p id="saveRemovalModalName" class="allModalName">Сохранить результаты удаления</p>
+        </div>
+        <div id="saveRemovalBody" class="modal-body" style="display: flex; flex-wrap: wrap">
+            <label for="removalName">Введите название операции:</label>
+            <input id="removalName" class="formModalName" autocomplete="off">
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="saveInRemovalModal">Сохранить</button>
+        </div>
+    </div>
+</div>
+<div id="checkOperationResult" class="modal">
+    <div class="modal-content" style="width: 70%">
+        <div class="modal-header">
+            <span class="close" id="closeOperationResultModal">&times;</span>
+            <p id="resultModalName">Результаты операций</p>
+        </div>
+        <div id="operationResultBlock" class="modal-body">
+            <table id="operationResultList" class="classList">
+                <tr>
+                    <th>Элемент класса</th>
+                    <th>Отношение</th>
+                    <th>Краевой класс</th>
+                    <th>Тип операции</th>
+                    <th>Результат операции</th>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <!--<button class="headButtons" id="modifySortButton">Сортировка</button>-->
+        </div>
+    </div>
+</div>
+<div id="showOperationResult" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeOperationShowingModal">&times;</span>
+            <p id="showingModalName">Результат операции</p>
+        </div>
+        <div id="operationShowingBlock" class="modal-body" style="width: 99%; height: 20rem">
+        </div>
+    </div>
+</div>
+<div id="showInsertionResult" class="modal">
+    <div class="modal-content" style="width: 65%;height: 100%;">
+        <div class="modal-header">
+            <span class="close" id="closeInsertionShowingModal">&times;</span>
+            <p id="insertionModalName">Результат вставки</p>
+        </div>
+        <div id="insertionShowingBlock" class="modal-body" style="width: 99%; height: 80%">
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="cancelShowingInsertionResult">Назад</button>
+        </div>
+    </div>
+</div>
+<div id="loadInformationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeLoadInformationModal">&times;</span>
+            <p id="loadInformationModalName">Загрузка данных из книги</p>
+        </div>
+        <div id="loadInformationBlock" class="modal-body">
+            <div id="my_pdf_viewer">
+                <div id="canvas_container">
+                    <canvas id="pdf_renderer" width="0" height="0"></canvas>
+                </div>
+                <div id="navigation_controls">
+                    <div id="navigation">
+                        <button id="go_previous" class="navigation_button">←</button>
+                        <input id="current_page" value="1" type="number" min="1" max="1"/>
+                        <p id="page_count">из 1</p>
+                        <button id="go_next" class="navigation_button">→</button>
+                    </div>
+                    <div id="scale">
+                        <button id="increase_image" class="scale_button">-</button>
+                        <button id="reduce_image" class="scale_button">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="loadInformationFromSource">Загрузить с пк</button>
+            <input name="projectInformation" type="file" id="sourceFile">
+            <button id="extract_data" class="headButtons">Извлечь текст</button>
+            <select class="input" name="projectInformation" id="fileType">
+                <option value="PDFExtractor" selected>Извлечение PDF</option>
+                <option value="WordExtractor">Извлечение Word</option>
+                <option value="AIExtractor">Извлечение с помощью AI</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div id="editDataModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeEditDataModal">&times;</span>
+            <p id="closeEditDataModalName">Редактирование текста</p>
+        </div>
+        <div id="editDataBlock" class="modal-body">
+            <textarea id="textAreaForExtractedData"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="headButtons" id="acceptEditing">Готово</button>
+            <button class="headButtons" id="saveEditing">Сохранить</button>
+            <button class="headButtons" id="cancelEditing">Отмена</button>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.1/backbone.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.6.5/joint.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/ru.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/+esm"></script>
+<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs"></script>
+
+<script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+
+<script src="./operationsForApplication/connection.js"></script>
+<script src="operationsForApplication/projectOperations/main.js"></script>
+<script src="operationsForApplication/projectOperations/save.js"></script>
+<script src="operationsForApplication/projectOperations/load.js"></script>
+<script src="operationsForApplication/workWithData/informationLoader.js"></script>
+<script src="operationsForApplication/workWithData/informationExtractor.js"></script>
+
+<script src="operationsForApplication/initialize.js"></script>
+<script src="operationsForApplication/elements/concept/workWithConceptValues.js"></script>
+<script src="operationsForApplication/elements/concept/concept.js"></script>
+
+<script src="operationsForApplication/elements/mainScript.js"></script>
+
+<script src="operationsWithOntology/operationsHelper.js"></script>
+<script src="operationsForApplication/elements/relation/workWithRelation.js"></script>
+<script src="operationsForApplication/elements/relation/relationMoving.js"></script>
+
+<script src="operationsForApplication/elements/windowsMoving.js"></script>
+
+<script src="operationsWithOntology/findNeighborhood.js"></script>
+<script src="operationsWithOntology/makeInsertion.js"></script>
+<script src="operationsWithOntology/makeRemoval.js"></script>
+<script src="operationsWithOntology/makeSelection.js"></script>
+
+<script src="operationsWithOntology/operations.js"></script>
+</html>
+

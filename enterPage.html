@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebOntology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/styleOfEnterPage.css" type="text/css"/>
+</head>
+<body class="background">
+<div>
+    <video autoplay muted loop id="myVideo">
+        <source src="styles/bgs1.mp4" type="video/mp4">
+    </video>
+</div>
+<div id="startWindow" class="mainButtons">
+    <div class="buttonContainer">
+        <button class="enterPageButton" id="createProjectModalOpener">Создать проект</button>
+        <button class="enterPageButton" id="loadProjectModalOpener">Открыть проект</button>
+    </div>
+</div>
+<div id="createProjectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeCreateProjectModal">&times;</span>
+            <p id="createProjectModalName" class="allModalName">Создание проекта</p>
+        </div>
+        <div id="saveProjectBody" class="modal-body">
+            <label for="projectName">Введите название проекта:</label>
+            <input class="nameOfNewProject" maxlength="64" id="projectName" type="text" autocomplete="off">
+        </div>
+        <div class="modal-footer">
+            <button class="buttonsInModal" id="createProjectButton">Создать</button>
+        </div>
+    </div>
+</div>
+<div id="loadProjectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeLoadProjectModal">&times;</span>
+            <p id="loadProjectModalName" class="allModalName">Загрузить проект</p>
+        </div>
+        <div id="loadProjectBody" class="modal-body">
+            <table id="projectList" class="classList">
+                <tr>
+                    <th>Имя</th>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="buttonsInModal" id="loadProject">Загрузить проект</button>
+            <input name="projectInformation" type="file" id="fileFromPC">
+            <button class="buttonsInModal" id="loadProjectFromPC">Загрузить с пк</button>
+            <button class="buttonsInModal" id="renameProjectButton">Переименовать проект</button>
+        </div>
+    </div>
+</div>
+<div id="renameProjectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeRenameProjectModal">&times;</span>
+            <p id="renameProjectModalName" class="allModalName">Переименование проекта</p>
+        </div>
+        <div id="renameProjectBody" class="modal-body">
+            <label for="projectRename">Введите новое название проекта:</label>
+            <input class="nameOfNewProject" maxlength="64" id="projectRename" type="text" autocomplete="off">
+        </div>
+        <div class="modal-footer">
+            <button class="buttonsInModal" id="renameProject">Переименовать</button>
+        </div>
+    </div>
+</div>
+</body>
+<script src="operationsForApplication/connection.js"></script>
+<script src="operationsForApplication/homePage/mainPage.js"></script>
+</html>
+
+<!--
+video.playbackRate = 5-->

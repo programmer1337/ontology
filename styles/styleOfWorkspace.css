@@ -1,0 +1,823 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    overflow: hidden;
+}
+
+hr {
+    border: none;
+    background-color: black;
+    margin: 0 10px 0 10px;
+    height: 2px;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+#navbar {
+    height: 73px;
+    background-color: #30094d;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 100%;
+}
+
+.headButtons {
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 30px;
+    margin: 15px 20px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #1c0128;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    background: #4c1774;
+    color: #fff;
+    transition: .1s ease-in-out;
+}
+
+.headButtons:hover {
+    background: #4f4f93;
+    color: #e8e8e8;
+}
+
+#deleteAll {
+    float: right;
+}
+
+.conceptButton {
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+    border: 2px solid #787878;
+    padding: 10px 20px;
+    background: #2b2b2b;
+    text-decoration: none;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.conceptButton:hover {
+    padding: 10px 20px;
+    box-shadow: 0 0 16px -6px #000000;
+    border-radius: 8px;
+}
+
+.conceptButton.sel {
+    opacity: .6;
+}
+
+#classViewModalName {
+    font-size: 24px;
+    background-color: #30094d;
+    color: #fff;
+}
+
+#classCreationModalValues {
+    margin: 1rem;
+    font-family: Roboto, sans-serif;
+    outline: none;
+}
+
+#tableInRelationModal {
+    overflow: auto;
+    max-height: 23rem;
+}
+
+#formType {
+    width: 50%;
+    font-weight: lighter;
+    font-size: 14px;
+    border: none;
+    font-family: Roboto, sans-serif;
+    background-color: #30094d;
+    color: #fff;
+    outline: none;
+}
+
+#deleteModalName {
+    width: 90%;
+    font-size: 24px;
+    border: none;
+    font-family: Roboto, sans-serif;
+    background-color: #30094d;
+    color: #fff;
+    outline: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /*    background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);*/
+}
+
+.modal-content {
+    max-height: 40rem;
+    font-family: Roboto, sans-serif;
+    position: relative;
+    background-color: #ffffff;
+    margin: auto;
+    padding: 0;
+    width: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 10px 16px;
+    background-color: #30094d;
+    color: white;
+}
+
+.modal-body {
+    margin: 1rem;
+    padding: 2px 16px;
+}
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #30094d;
+    color: white;
+}
+
+#modifyBody {
+    overflow: auto;
+    height: 30rem;
+}
+
+#modalBody {
+    overflow: auto;
+    height: 30rem;
+}
+
+#modalValues {
+    width: 446px;
+    font-size: 24px;
+    padding: 0.3rem;
+    border-radius: 0;
+    border: 1px solid black;
+    margin: 1rem 1rem 1rem 0;
+    font-family: Roboto, sans-serif;
+    font-weight: lighter;
+    outline: none;
+}
+
+#clean {
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px 15px;
+    position: relative;
+    border: 2px solid #4f4f93;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    background: #6d6dc1;
+    color: #fff;
+    transition: .2s ease-in-out;
+}
+
+#clean:hover {
+    background: #fff;
+    color: #000;
+}
+
+#addModalValues {
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px 15px;
+    position: relative;
+    border: 2px solid #4f4f93;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    background: #6d6dc1;
+    color: #fff;
+    transition: .2s ease-in-out;
+}
+
+#addModalValues:hover {
+    background: #fff;
+    color: #000;
+}
+
+#changeModalValues {
+    cursor: pointer;
+    text-decoration: none;
+    display: none;
+    padding: 5px 15px;
+    position: relative;
+    border: 2px solid #4f4f93;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    background: #6d6dc1;
+    color: #fff;
+    transition: .2s ease-in-out;
+}
+
+#changeModalValues:hover {
+    background: #fff;
+    color: #000;
+}
+
+#selectValues {
+    width: 162px;
+    margin: 1rem;
+    font-family: 'Roboto', sans-serif;
+    outline: none;
+}
+
+#line {
+    position: absolute;
+    width: 0;
+    height: 0;
+    background: rgba(0, 90, 255, 0.25);
+    border: 1px solid rgba(0, 114, 255, 0.5);
+    box-sizing: border-box;
+}
+
+
+#areaName {
+    font-size: 24px;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+    background-color: #313236;
+    color: #fff;
+    outline: none;
+}
+
+#formula {
+    height: 55px;
+    font-size: 2em;
+    font-family: KaTeX_Main, serif;
+    margin: 10px 5px 10px 25px;
+}
+
+.colorChanger {
+    margin: 10px 0 10px 10px;
+    background: #ffffff;
+    border-radius: 4px;
+}
+
+.conceptArea {
+    font-family: Roboto;
+    width: 25rem;
+    height: 20rem;
+    display: block;
+    border: 0.3rem solid black;
+    border-radius: 75%;
+    background: #484c4f;
+}
+
+#selectValues .ui-sortable-helper {
+    box-shadow: rgba(0, 0, 0, 0.14) 10px 10px 10px -5px;
+}
+
+.draggable {
+    cursor: move;
+    user-select: none;
+}
+
+
+.active:hover {
+    background: #56118f;
+}
+
+.headerLi {
+    width: 196px;
+    display: inline;
+}
+
+.hoverLi {
+    width: 196px;
+}
+
+.hoverLi:hover {
+    background: #d0d0d0;
+}
+
+.navbarButton {
+    width: inherit;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    font-family: "Roboto", sans-serif;
+    background-color: transparent;
+}
+
+.submenu li {
+    display: block;
+    position: relative;
+    color: #282828;
+    font-size: 13px;
+    border-bottom: 1px solid #CBCBCC;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav ul:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+nav a {
+    text-decoration: none;
+    display: block;
+}
+
+.topMenu > li {
+    font-family: Roboto, sans-serif;
+    float: left;
+    position: relative;
+}
+
+.topMenu > li:first-child {
+    font-family: Roboto, sans-serif;
+    border-left: 0;
+}
+
+.topMenu > li > a {
+    font-family: Roboto, sans-serif;
+    padding: 28px 70px;
+    font-size: 14px;
+    text-shadow: black 0 0 3px;
+    color: #FEFDFD;
+}
+
+.submenu {
+    cursor: pointer;
+    position: absolute;
+    z-index: 10000;
+    width: 194px;
+    background: white;
+    border-left: 1px solid #CBCBCC;
+    border-right: 1px solid #CBCBCC;
+    visibility: hidden;
+    opacity: 0;
+}
+
+nav li:hover > .submenu {
+    transform: rotateX(0deg);
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.classList {
+    max-height: 50px;
+    width: 100%;
+    margin: .5rem 0 0.5rem 0;
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+}
+
+.classList th {
+    cursor: default;
+    font-weight: lighter;
+    padding: 5px;
+    background: #cacaca;
+    border: 1px solid #dddddd;
+}
+
+.classList td {
+    cursor: pointer;
+    border: 1px solid #dddddd;
+    padding: 5px;
+}
+
+tr:hover {
+    background: #eaeaea;
+    cursor: pointer;
+}
+
+#typeSelect {
+    margin: .5rem 0 .5rem 0;
+    padding: .5rem;
+}
+
+#sortButtonAZ {
+    background: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    margin: .1rem;
+}
+
+#sortButtonZA {
+    background: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    margin: .1rem;
+}
+
+.fContent {
+    left: 490px;
+    top: 240px;
+    background: #efefef;
+    position: absolute;
+    border: 1px solid #000;
+}
+
+#functionsModal {
+    z-index: 1001;
+}
+
+table tr td {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#function {
+    margin: 1rem 0 1rem 0;
+    background: #f0f0f0;
+    justify-content: space-evenly;
+    align-items: center;
+    border: black solid 1px;
+    cursor: pointer;
+    position: relative;
+    padding: .3rem;
+}
+
+
+.functionButton {
+    margin: 1px;
+    font-family: "Times New Roman", sans-serif;
+    background: #f0f0f0;
+    width: 120px;
+    height: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+}
+
+.functionButton:hover {
+    box-shadow: 1px 1px 1px #696969, -1px -1px 1px #ffffff;
+}
+
+.functionButton:active {
+    box-shadow: 1px 1px 1px #ffffff, -1px -1px 1px #696969;
+}
+
+.dropdownContent {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    overflow: auto;
+    box-shadow: 1px 1px 1px #696969, -1px -1px 1px #ffffff;
+    z-index: 1;
+}
+
+.lowerGreek {
+    font-family: "Times New Roman", sans-serif;
+}
+
+.constructorSymbols {
+    margin: 1px;
+    padding: 3px;
+    border: none;
+    width: 20px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.rowed {
+    margin: 1px;
+    display: flex;
+    flex-direction: column;
+}
+
+.show {
+    display: flex;
+}
+
+.constructorSymbols:hover {
+    box-shadow: 1px 1px 1px #696969, -1px -1px 1px #ffffff;
+}
+
+.calculation {
+    display: none;
+    position: fixed;
+}
+
+
+.noSelect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.formModalName {
+    margin: 8px 0 8px 0;
+    width: 98%;
+    font-size: 24px;
+    border: none;
+    font-family: Roboto, sans-serif;
+    outline: 1px solid black;
+}
+
+.allModalName::placeholder {
+    color: white;
+}
+
+.allModalName {
+    width: 98%;
+    font-size: 24px;
+    border: none;
+    font-family: Roboto, sans-serif;
+    background-color: #30094d;
+    color: #ffffff;
+    outline: none;
+}
+
+.selected {
+    background: rgb(179, 179, 179);
+}
+
+.selected:hover {
+    background: #b3b3b3;
+}
+
+.formControl {
+    margin: 1rem;
+    padding: 0.3rem;
+    border-radius: 0;
+    outline: none;
+    border: 1px solid black;
+}
+
+#labelTypeSelect {
+    width: 100px;
+}
+
+canvas {
+    display: block;
+}
+
+
+.router-switch {
+    width: 100px;
+    margin: 4px;
+    background: #68ddd5;
+    color: #484e68;
+    outline: none;
+    font-size: 12px;
+    border: none;
+    padding: 4px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.router-switch:hover {
+    background: #fdc685;
+    color: #fff;
+}
+
+.listOfElements {
+    margin: 10px;
+    max-height: 50px;
+    width: 100%;
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+}
+
+.listOfElements th {
+    cursor: default;
+    font-weight: lighter;
+    padding: 5px;
+    background: #cacaca;
+    border: 1px solid #dddddd;
+}
+
+.listOfElements td {
+    cursor: pointer;
+    border: 1px solid #dddddd;
+    padding: 5px;
+}
+
+.FNContainer {
+    margin: 1rem;
+}
+
+#listOfClass {
+    width: 213px;
+}
+
+#listOfSecondClass {
+    width: 218px;
+}
+
+.select2 {
+    min-width: 170px;
+}
+
+.treeBlock {
+    width: 80%;
+    height: 300px;
+}
+
+.insertionStyle {
+    display: flex;
+    justify-content: space-between;
+}
+
+.labelStyle {
+    width: 35%;
+}
+
+.styleOfTreeBlocksInInsertion {
+    height: 300px;
+    width: 49%;
+    display: inline-block;
+}
+
+.numberOfStroke {
+    font-weight: bold;
+    width: 2%;
+}
+
+.cl1 {
+    margin: 15px 0;
+}
+
+.active {
+    display: flex;
+    justify-content: center;
+}
+
+/*#my_pdf_viewer {
+    height: 100%;
+}*/
+
+#loadInformationBlock {
+    overflow: auto;
+    height: 565px;
+}
+
+#canvas_container {
+    background: #2b2b2b;
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: center;
+}
+
+#navigation_controls {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    padding: 6px;
+    border-radius: 6px;
+
+    background: #2b2b2b;
+}
+
+#navigation {
+    display: flex;
+
+    flex: 3 0;
+}
+
+#scale {
+    display: flex;
+    justify-content: flex-end;
+
+    flex: 1 0;
+}
+
+.navigation_button {
+    font-family: Roboto, sans-serif;
+    font-size: 18px;
+
+    padding-inline: 4px;
+    padding-bottom: 3px;
+    margin-inline: 4px;
+
+    outline: none;
+    background: #525252;
+    border: 1px solid black;
+
+    cursor: pointer;
+}
+
+.navigation_button:hover {
+    background: #3d3d3d;
+
+    transition: all 0.4s;
+}
+
+.scale_button {
+    font-family: Roboto, sans-serif;
+    font-size: 18px;
+
+    padding-inline: 8px;
+    margin-inline: 2px;
+
+    outline: none;
+    background: #525252;
+    border: 1px solid black;
+
+    cursor: pointer;
+}
+
+.scale_button:hover {
+    background: #3d3d3d;
+
+    transition: all 0.4s;
+}
+
+#current_page {
+    font-family: Roboto, sans-serif;
+    font-size: 15px;
+
+    width: 25%;
+    padding: 4px;
+
+    outline: none;
+    border: 1px solid black;
+}
+
+#page_count {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 30%;
+
+    font-size: 15px;
+    font-weight: 400;
+
+    color: white;
+}
+
+#loadInformationBlock::-webkit-scrollbar-thumb {
+    border-radius: 16px;
+    background: #b0b0b0;
+}
+
+#loadInformationBlock::-webkit-scrollbar {
+    width: 6px;
+}
+
+.input {
+    font-family: 'Roboto', sans-serif;
+
+    cursor: pointer;
+    outline: none;
+    padding: 9px 16px;
+    position: relative;
+    border: 2px solid #1c0128;
+    border-radius: 8px;
+
+    max-width: 25%;
+
+    background: #4c1774;
+    color: #fff;
+}
+
+#textAreaForExtractedData {
+    width: 100%;
+    height: 300px;
+
+    font-size: 14px;
+}
