@@ -1,10 +1,10 @@
 let loadInformationModalOpener = document.getElementById(
-  'loadInformationModalOpener');
-let loadInformationModal = document.getElementById('loadInformationModal');
+  'loadInformationModalOpener')
+let loadInformationModal = document.getElementById('loadInformationModal')
 let loadInformationFromSource = document.getElementById(
-  'loadInformationFromSource');
+  'loadInformationFromSource')
 
-let sourceFile, path;
+let sourceFile, path
 
 let pdfState = {
   pdf: null,
@@ -14,51 +14,60 @@ let pdfState = {
 }
 
 loadInformationModalOpener.addEventListener('click', () => {
-  loadInformationModal.style.display = 'block';
+  loadInformationModal.style.display = 'block'
 })
 
 loadInformationFromSource.addEventListener('click', async () => {
-  sourceFile = document.getElementById('sourceFile').files[0];
+  sourceFile = document.getElementById('sourceFile').files[0]
 
-  let formData = new FormData();
-  formData.append('file', sourceFile);
+  let extension = ''
+  const parts = sourceFile.name.split('.')
+  if (parts.length > 1) extension = parts.pop()
 
-  let fileName = sourceFile.name;
+  if (extension === 'pdf') {
+    let formData = new FormData()
+    formData.append('file', sourceFile)
 
-  await fetch(saveTempFile, {
-    method: 'POST',
-    body: formData,
-  }).then(() => {
-    path = tempFilesPath + fileName;
+    let fileName = sourceFile.name
 
-    pdfjsLib.getDocument(path).promise.then((pdf) => {
-      pdfState.pdf = pdf;
-      pdfState.pageCount = pdf._pdfInfo.numPages;
-      pdfState.currentPage = 1;
-      pdfState.scale = 1;
+    await fetch(saveTempFile, {
+      method: 'POST',
+      body: formData,
+    }).then(() => {
+      path = tempFilesPath + fileName
 
-      document.getElementById('current_page').value = String(1);
-      document.getElementById('current_page').max = pdfState.pageCount;
+      pdfjsLib.getDocument(path).promise.then((pdf) => {
+        pdfState.pdf = pdf
+        pdfState.pageCount = pdf._pdfInfo.numPages
+        pdfState.currentPage = 1
+        pdfState.scale = 1
 
-      document.getElementById('page_count').textContent = 'из ' +
-        pdfState.pageCount;
+        document.getElementById('current_page').value = String(1)
+        document.getElementById('current_page').max = pdfState.pageCount
 
-      render();
+        document.getElementById('page_count').textContent = 'из ' +
+          pdfState.pageCount
 
-    }).catch(pdfError => {
-      console.log(pdfError);
+        render()
+
+      }).catch(pdfError => {
+        console.log(pdfError)
+      })
     })
-  })
+  } else if (extension === 'txt') {
+    wordExtraction()
+  }
 })
+
 function render () {
   pdfState.pdf.getPage(pdfState.currentPage).then(page => {
 
-    let pdfCanvas = document.getElementById('pdf_renderer');
-    let context = pdfCanvas.getContext('2d');
-    let viewport = page.getViewport({ scale: pdfState.scale });
+    let pdfCanvas = document.getElementById('pdf_renderer')
+    let context = pdfCanvas.getContext('2d')
+    let viewport = page.getViewport({ scale: pdfState.scale })
 
-    pdfCanvas.width = viewport.width;
-    pdfCanvas.height = viewport.height;
+    pdfCanvas.width = viewport.width
+    pdfCanvas.height = viewport.height
 
     page.render({
       canvasContext: context,
@@ -88,29 +97,29 @@ document.getElementById('go_next').addEventListener('click', () => {
 document.getElementById('current_page').addEventListener('keypress', (e) => {
   if (pdfState.pdf == null) return
 
-  if (e.code === "Enter") {
+  if (e.code === 'Enter') {
     let desiredPage =
-      document.getElementById('current_page').valueAsNumber;
+      document.getElementById('current_page').valueAsNumber
 
     if (desiredPage >= 1
       && desiredPage <= pdfState.pageCount) {
-      pdfState.currentPage = desiredPage;
-      document.getElementById('current_page').value = desiredPage;
-      render();
+      pdfState.currentPage = desiredPage
+      document.getElementById('current_page').value = desiredPage
+      render()
     }
   }
 })
 
 document.getElementById('increase_image').addEventListener('click', () => {
-  if (pdfState.pdf == null) return;
+  if (pdfState.pdf == null) return
 
-  pdfState.scale -= 0.25;
-  render();
+  pdfState.scale -= 0.25
+  render()
 })
 
 document.getElementById('reduce_image').addEventListener('click', () => {
   if (pdfState.pdf == null) return
 
-  pdfState.scale += 0.25;
-  render();
+  pdfState.scale += 0.25
+  render()
 })

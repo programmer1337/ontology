@@ -28,6 +28,7 @@ function wordExtraction () {
   reader.readAsText(file)
 
   reader.onload = function () {
+    setResult(reader.result)
     console.log(reader.result)
   }
 
