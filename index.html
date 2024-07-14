@@ -58,6 +58,9 @@
                     <button class="navbarButton" id="addRelation">Создать отношение</button>
                 </li>
                 <li class="hoverLi">
+                    <button class="navbarButton" id="fillRelation">Заполнить отношения</button>
+                </li>
+                <li class="hoverLi">
                     <button class="navbarButton" id="viewRelation">Просмотреть отношения</button>
                 </li>
             </ul>
@@ -329,13 +332,29 @@
     <div class="modal-content">
         <div class="modal-header">
             <span class="close" id="closeRelationViewModal">&times;</span>
-            <p id="relationViewModalName">Все классы</p>
+            <p id="relationViewModalName">Все отношения</p>
         </div>
         <div id="viewRelationBody" class="modal-body" style="overflow: auto; height: 30rem;">
             <table id="relationList" class="classList">
                 <tr>
                     <th>Имя</th>
                     <th>Тип</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="fillRelationModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="closeFillRelationModal">&times;</span>
+            <p id="fillRelationModalName">Все отношения</p>
+        </div>
+        <div id="fillRelationBody" class="modal-body" style="overflow: auto; height: 30rem;">
+            <table id="fillRelationRelList" class="classList">
+                <tr>
+                    <th>#</th>
+                    <th>Имя отношения</th>
                 </tr>
             </table>
         </div>
